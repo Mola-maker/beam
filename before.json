@@ -1,0 +1,45 @@
+{
+  "label": "before",
+  "os": "Linux-7.0.0-38-generic-x86_64-with-glibc2.43",
+  "python": "3.12.14",
+  "beam": "2.78.0.dev",
+  "beam_source": "/home/jlu/Documents/Codex/2026-10-12/new-chat/work/repos/beam/sdks/python/apache_beam/__init__.py",
+  "dask": "2026.8.0",
+  "distributed": "2026.8.0",
+  "worker_processes": 2,
+  "runner_state": "DONE",
+  "expected": [
+    [
+      "process",
+      1
+    ],
+    [
+      "process",
+      2
+    ],
+    [
+      "process",
+      3
+    ],
+    [
+      "finish",
+      6
+    ]
+  ],
+  "actual": [
+    [
+      "process",
+      1
+    ],
+    [
+      "process",
+      2
+    ],
+    [
+      "process",
+      3
+    ]
+  ],
+  "finish_bundle_output_present": false,
+  "matches_expected": false
+}

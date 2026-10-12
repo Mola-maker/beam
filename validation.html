@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Apache Beam — verified finish_bundle output</title><style>body{margin:0;background:#f4f6f8;color:#18283a;font:16px system-ui}main{max-width:1020px;margin:32px auto;padding:30px;background:white;border:1px solid #d9e0e7;border-radius:12px}h1{margin:0 0 8px;font-size:28px}p{line-height:1.5}small{color:#516174}.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}pre{padding:16px;background:#f4f6f8;border:1px solid #d9e0e7;border-radius:6px;font:15px/1.5 monospace;white-space:pre-wrap}.pass{background:#edf9f2;border-left:5px solid #21804a;padding:14px}.meta{display:flex;gap:14px;flex-wrap:wrap;margin:20px 0}.meta span{padding:6px 10px;background:#edf2f7;border-radius:5px}h2{font-size:18px}</style><main><small>CAPTURED LOCAL EXECUTION · UBUNTU HOST · 2026-10-12</small><h1>Apache Beam DaskRunner: finish_bundle output restored</h1><p>Captured results from <strong>2 real Dask worker processes</strong> before and after the source fix. Pipeline: Create([1, 2, 3]) → DoFn process + finish_bundle → gather worker results.</p><div class="meta"><span>Python 3.12.14</span><span>Beam 2.78.0.dev</span><span>Dask 2026.8.0</span><span>Runner state: DONE</span></div><div class="pass"><strong>After fix: the complete output includes ("finish", 6), as expected.</strong><br>Change: collect receiver outputs after invoke_finish_bundle(), before teardown().</div><div class="grid"><section><h2>Before fix — actual output</h2><pre>[
+  [
+    &quot;process&quot;,
+    1
+  ],
+  [
+    &quot;process&quot;,
+    2
+  ],
+  [
+    &quot;process&quot;,
+    3
+  ]
+]</pre></section><section><h2>After fix — actual output</h2><pre>[
+  [
+    &quot;process&quot;,
+    1
+  ],
+  [
+    &quot;process&quot;,
+    2
+  ],
+  [
+    &quot;process&quot;,
+    3
+  ],
+  [
+    &quot;finish&quot;,
+    6
+  ]
+]</pre></section></div><h2>Verification and installed dependencies</h2><pre>Original code: both new regression tests FAILED with missing records
+Fixed code, fresh workers: 29 passed, 1 xfailed, 5 subtests passed in 9.28s
+Existing expected failure: test_pardo_windowed_side_inputs
+Ruff: All checks passed! · Yapf: no formatting diff
+pip check: No broken requirements found.
+protobuf 6.33.6 · pyarrow 25.0.1 · pandas 2.3.3 · pytest 9.1.1</pre><small>Evidence comes from before.json, after.json, dask-red.xml and dask-green.xml. This is a screenshot of recorded backend execution evidence, not an application UI.</small></main></html>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="1.521" timestamp="2026-10-12T20:36:19.565585+08:00" hostname="jlu-PC"><testcase classname="apache_beam.runners.dask.dask_runner_test.DaskRunnerRunPipelineTest" name="test_pardo_finish_bundle_outputs" time="0.595"><failure message="apache_beam.testing.util.BeamAssertException: Failed assert: [1, 2, 3] == [], missing elements [1, 2, 3]">self = &lt;apache_beam.runners.dask.dask_runner_test.DaskRunnerRunPipelineTest testMethod=test_pardo_finish_bundle_outputs&gt;
+
+    def test_pardo_finish_bundle_outputs(self):
+      class BufferElements(beam.DoFn):
+        def start_bundle(self):
+          self.elements = []
+    
+        def process(self, element):
+          self.elements.append(element)
+          return []
+    
+        def finish_bundle(self):
+          for element in self.elements:
+            yield window.WindowedValue(element, 0, [window.GlobalWindow()])
+    
+&gt;     with self.pipeline as p:
+           ^^^^^^^^^^^^^
+
+apache_beam/runners/dask/dask_runner_test.py:141: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apache_beam/pipeline.py:654: in __exit__
+    self.result = self.run()
+                  ^^^^^^^^^^
+apache_beam/testing/test_pipeline.py:123: in run
+    state = result.wait_until_finish(duration=self.timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apache_beam/runners/dask/dask_runner.py:139: in wait_until_finish
+    for _ in ddist.as_completed(self.futures,
+../../../../venvs/beam/lib/python3.12/site-packages/distributed/client.py:5777: in __next__
+    return self._get_and_raise()
+           ^^^^^^^^^^^^^^^^^^^^^
+../../../../venvs/beam/lib/python3.12/site-packages/distributed/client.py:5766: in _get_and_raise
+    raise exc.with_traceback(tb)
+apache_beam/runners/dask/transform_evaluator.py:196: in apply_dofn_to_bundle
+    do_fn_invoker.invoke_process(it)
+      ^^^^^^^^^^^^^^^^^
+apache_beam/runners/common.py:914: in invoke_process
+    self._invoke_process_per_window(
+    ^^^^^^^^^^^^^^^^^
+apache_beam/runners/common.py:1059: in _invoke_process_per_window
+    self.process_method(*args_for_process, **kwargs_for_process),
+    ^^^^^^^^^^^^^^^^^
+apache_beam/transforms/core.py:2128: in &lt;lambda&gt;
+    wrapper = lambda x, *args, **kwargs: [fn(x, *args, **kwargs)]
+      ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+&gt;   raise BeamAssertException(msg)
+    ^^^^^^^^^^^^^^^^^
+E   apache_beam.testing.util.BeamAssertException: Failed assert: [1, 2, 3] == [], missing elements [1, 2, 3]
+
+apache_beam/testing/util.py:205: BeamAssertException</failure></testcase><testcase classname="apache_beam.runners.dask.dask_runner_test.DaskRunnerRunPipelineTest" name="test_pardo_process_and_finish_bundle_outputs" time="0.499"><failure message="apache_beam.testing.util.BeamAssertException: Failed assert: [1, 2, 3, -1, -2, -3] == [1, 2, 3], missing elements [-1, -2, -3]">self = &lt;apache_beam.runners.dask.dask_runner_test.DaskRunnerRunPipelineTest testMethod=test_pardo_process_and_finish_bundle_outputs&gt;
+
+    def test_pardo_process_and_finish_bundle_outputs(self):
+      class EmitAtProcessAndFinish(beam.DoFn):
+        def start_bundle(self):
+          self.elements = []
+    
+        def process(self, element):
+          self.elements.append(element)
+          yield element
+    
+        def finish_bundle(self):
+          for element in self.elements:
+            yield window.WindowedValue(-element, 0, [window.GlobalWindow()])
+    
+&gt;     with self.pipeline as p:
+           ^^^^^^^^^^^^^
+
+apache_beam/runners/dask/dask_runner_test.py:158: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+apache_beam/pipeline.py:654: in __exit__
+    self.result = self.run()
+                  ^^^^^^^^^^
+apache_beam/testing/test_pipeline.py:123: in run
+    state = result.wait_until_finish(duration=self.timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+apache_beam/runners/dask/dask_runner.py:139: in wait_until_finish
+    for _ in ddist.as_completed(self.futures,
+../../../../venvs/beam/lib/python3.12/site-packages/distributed/client.py:5777: in __next__
+    return self._get_and_raise()
+           ^^^^^^^^^^^^^^^^^^^^^
+../../../../venvs/beam/lib/python3.12/site-packages/distributed/client.py:5766: in _get_and_raise
+    raise exc.with_traceback(tb)
+apache_beam/runners/dask/transform_evaluator.py:196: in apply_dofn_to_bundle
+    do_fn_invoker.invoke_process(it)
+      ^^^^^^^^^^^^^^^^^
+apache_beam/runners/common.py:914: in invoke_process
+    self._invoke_process_per_window(
+    ^^^^^^^^^^^^^^^^^
+apache_beam/runners/common.py:1059: in _invoke_process_per_window
+    self.process_method(*args_for_process, **kwargs_for_process),
+    ^^^^^^^^^^^^^^^^^
+apache_beam/transforms/core.py:2128: in &lt;lambda&gt;
+    wrapper = lambda x, *args, **kwargs: [fn(x, *args, **kwargs)]
+      ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+&gt;   raise BeamAssertException(msg)
+    ^^^^^^^^^^^^^^^^^
+E   apache_beam.testing.util.BeamAssertException: Failed assert: [1, 2, 3, -1, -2, -3] == [1, 2, 3], missing elements [-1, -2, -3]
+
+apache_beam/testing/util.py:205: BeamAssertException</failure></testcase></testsuite></testsuites>
